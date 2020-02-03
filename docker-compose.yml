@@ -1,0 +1,27 @@
+version: '3'
+
+networks:
+  lan_network:
+    driver: bridge
+
+services:
+  apache:
+    hostname: apache
+    build: ./apache-alpine
+    volumes:
+      - /var/log/apache-log:/var/log/apache2
+    ports:
+      - 80:80
+
+#  db:
+#    hostname: mysql
+#    build: ./mysql
+#    environment:
+#      MYSQL_ROOT_PASSWORD: password
+#    volumes:
+#      - /var/log/mysql-log:/var/log/mysql
+#      - /var/lib/mysql-lib:/var/lib/mysql
+#    ports:
+#      - 3306:3306
+#    networks:
+#      -  lan_network
