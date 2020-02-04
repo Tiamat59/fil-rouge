@@ -5,24 +5,25 @@ networks:
     driver: bridge
 
 services:
-  apache:
-    hostname: apache
-    build: apache
-    volumes:
-      - /var/log/apache-log:/var/log/apache2
-    ports:
-      - 80:80
-
-
-#  db:
-#    hostname: mysql
-#    build: ./mysql
-#    environment:
-#      MYSQL_ROOT_PASSWORD: password
+#  apache:
+#    hostname: apache
+#    build: apache
 #    volumes:
-#      - /var/log/mysql-log:/var/log/mysql
-#      - /var/lib/mysql-lib:/var/lib/mysql
+#      - /var/log/apache-log:/var/log/apache2
 #    ports:
-#      - 3306:3306
-#    networks:
-#      -  lan_network
+#      - 80:80
+
+
+  db:
+    hostname: mysql
+    build: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: testapp
+    volumes:
+      - /var/log/mysql-log:/var/log/mysql
+      - /var/lib/mysql-lib:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      -  lan_network
