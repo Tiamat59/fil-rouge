@@ -5,25 +5,43 @@ networks:
     driver: bridge
 
 services:
-#  apache:
-#    hostname: apache
-#    build: apache
-#    volumes:
-#      - /var/log/apache-log:/var/log/apache2
-#    ports:
-#      - 80:80
-
-
-  db:
-    hostname: mysql
-    build: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: testapp
+  backup:
+    hostname : fr-backup
+    build: backup
     volumes:
-      - /var/log/mysql-log:/var/log/mysql
-      - /var/lib/mysql-lib:/var/lib/mysql
+      - /var/log/mysql-backup:/root/mysql-backup
+  apache:
+    hostname : fr-apache
+    # Build a partir du Dockerfile du dossier apache
+    build: apache
+    volumes:
+      - /var/log/apache-log:/var/log/apache2
     ports:
-      - 3306:3306
-    networks:
-      -  lan_network
+     - 80:80
+  db:
+    hostname: fr-mysql
+    image: mysql:5.7
+    restart: always
+    environment:
+      # Crétion d'une base de donnée filerouge_db
+      MYSQL_DATABASE: 'filrouge_db'
+      # Création d'un utilisateur standard
+      MYSQL_USER: 'filrouge_user'
+      # Mot de passe de l'utilisateur standard
+      MYSQL_PASSWORD: 'filrouge_password'
+      # Personnalisation du mot de passe root
+      MYSQL_ROOT_PASSWORD: 'toor'
+    ports:
+      # Exposition du port
+      - '3306:3306'
+    volumes:
+      - db:/var/lib/mysql
+  # icinga:
+  #   hostname: fr-icinga
+  #   image: jordan/icinga2
+  #   ports:
+  #   - 8080:80
+    
+# Déclaration des différents volumes
+volumes:
+  db:
