@@ -36,11 +36,13 @@ services:
       - '3306:3306'
     volumes:
       - db:/var/lib/mysql
-  # icinga:
-  #   hostname: fr-icinga
-  #   image: jordan/icinga2
-  #   ports:
-  #   - 8080:80
+  icinga:
+    hostname: fr-icinga
+    image: jordan/icinga2
+    # volumes:
+    #   - ./icinga/hosts.conf:/etc/icinga2/conf.d/hosts.conf
+    ports:
+    - 8080:80
     
 # Déclaration des différents volumes
 volumes:
